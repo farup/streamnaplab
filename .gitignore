@@ -11,6 +11,7 @@ __pycache__/
 *.0
 
 final_work
+*.mp4
 
 # Distribution / packaging
 .Python
@@ -117,7 +118,6 @@ venv.bak/
 
 # cython generated cpp
 data
-.vscode
 .idea
 
 # custom
