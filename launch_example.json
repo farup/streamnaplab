@@ -1,0 +1,64 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+           {
+            "name": "Python: Test StreamMapNet NapLab",
+            "type": "python",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "program": "/cluster/home/terjenf/streamnaplab/HD-Maps/tools/test.py",
+            "args": [
+                "/cluster/home/terjenf/streamnaplab/HD-Maps/plugin/configs/nusc_newsplit_480_60x30_24e_naplab.py",
+                "/cluster/home/terjenf/StreamMapNet/ckpts/nusc_newsplit_480_60x30_24e.pth",
+                "--eval",
+                "--eval-options",
+                "save_semantic=True",
+                "--work-dir", 
+                "/cluster/home/terjenf/streamnaplab/HD-Maps/results/work_dir",
+                "--show-dir", 
+                "/cluster/home/terjenf/streamnaplab/HD-Maps/results/show_dir"
+            ]
+        },
+        {
+            "name": "Python: Visualize StreamMapNet NapLab",
+            "type": "python",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "program": "/cluster/home/terjenf/streamnaplab/HD-Maps/tools/visualization/visualize_naplab.py",
+            "args": [
+                "/cluster/home/terjenf/streamnaplab/HD-Maps/plugin/configs/nusc_newsplit_480_60x30_24e_naplab.py",
+                "0",
+                "--result",
+                "/cluster/home/terjenf/streamnaplab/HD-Maps/results/work_dir/submission_vector.json",
+                "--out-dir", 
+                "/cluster/home/terjenf/streamnaplab/HD-Maps/results/visualizations",
+                "--trip",
+                "Trip087",
+                "--dataroot", 
+                "/cluster/home/terjenf/naplab/data"
+            ]
+        },
+        {
+            "name": "Python: Generate StreamMapNet NapLab Video",
+            "type": "python",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "program": "/cluster/home/terjenf/streamnaplab/HD-Maps/tools/visualization/convert_to_video.py",
+            "args": [
+                "--image-folder",
+                "/cluster/home/terjenf/streamnaplab/HD-Maps/results/visualizations/scene_8/pred",
+                "--pred", 
+                "True"
+            ]
+        },
+
+
+    ]
+}

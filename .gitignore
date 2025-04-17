@@ -145,7 +145,7 @@ demo/
 *.tar
 *.tar.gz
 *.json
-!launch.json
+!launch_example.json
 
 # datasets
 /datasets

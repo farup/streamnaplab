@@ -62,7 +62,7 @@ To use data from NapLab car, the dataset needs to be generated in NapLab format 
 
 ### 3. Test with NapLab Data: 
 
-To test and visualzie StreamMapNet with data from NapLab, you can either request an interactive job from [IDUN ](https://www.hpc.ntnu.no/idun/documentation/running-jobs/) or submit slurm jobs. The follwoing steps utilize interactive jobs and lauch scripts with python debugger. launch.json is provided, however the filepaths need to be changed. 
+To test and visualzie StreamMapNet with data from NapLab, you can either request an interactive job from [IDUN ](https://www.hpc.ntnu.no/idun/documentation/running-jobs/) or submit slurm jobs. The follwoing steps utilize interactive jobs and lauch scripts with python debugger. launch_example.json is provided, copy the content and change the paths your vscode/launche.json file. 
 
 Interactive job can be requested in the cmd: 
 ```
