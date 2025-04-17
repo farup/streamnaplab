@@ -38,6 +38,17 @@ def parse_args():
         '--out-dir', 
         default='demo',
         help='directory where visualize results will be saved')
+    
+    parser.add_argument(
+        '--trip',
+        help='trip to visuzalize'
+    )
+
+    parser.add_argument(
+        '--dataroot',
+        help='path to parent root of extracted trips'
+    )
+
     args = parser.parse_args()
 
     return args
@@ -74,10 +85,13 @@ def import_plugin(cfg):
 
 def main():
 
-    dataroot ="/cluster/home/terjenf/naplab/data"
-    trip="Trip077"
-    nap = NapLab(dataroot=dataroot, trip=trip)
+  
     args = parse_args()
+
+    trip = args.trip
+    dataroot = args.dataroot
+    nap = NapLab(dataroot=dataroot, trip=trip)
+    
 
 
     cfg = Config.fromfile(args.config)

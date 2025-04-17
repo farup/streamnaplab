@@ -23,7 +23,7 @@ ann_file = "/cluster/home/terjenf/naplab/data/Trip087/mild_fw_func_maptracker_in
 data_root = "/cluster/home/terjenf/naplab/data" 
 
 sample_start = 320 # 8 Scenes * 40 Frames per scene = 320
-sample_end = 400
+sample_end = 360
 
 
 

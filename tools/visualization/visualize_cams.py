@@ -135,9 +135,7 @@ def main():
         viz_image = nap.visualize_sample_compact(sample_id, model_name="StreamMapNet", save=True)
         cam_imgs.append(viz_image)
 
-        #out_dir = os.path.join(scene_dir, str(idx - start_idx + 1))
-        #gt_dir = os.path.join(scene_dir, 'gt')
-        
+   
 
         if args.result is not None:
             os.makedirs(pred_dir, exist_ok=True)

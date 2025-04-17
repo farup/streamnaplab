@@ -20,9 +20,15 @@ from IPython import embed
 
 import sys 
 
+
+
+# sys.path.append("/cluster/home/terjenf/")
+# sys.path.append("/cluster/home/terjenf/StreamMapNet/")
+# sys.path.append("/cluster/home/terjenf/StreamMapNet/plugin")
+
 sys.path.append("/cluster/home/terjenf/")
-sys.path.append("/cluster/home/terjenf/StreamMapNet/")
-sys.path.append("/cluster/home/terjenf/StreamMapNet/plugin")
+sys.path.append("/cluster/home/terjenf/streamnaplab/HD-Maps")
+sys.path.append("/cluster/home/terjenf/streamnaplab/HD-Maps/plugin")
 
 def parse_args():
     parser = argparse.ArgumentParser(

@@ -1,16 +1,34 @@
 import argparse
-import mmcv
-from mmcv import Config
+
 import os
-from mmdet3d.datasets import build_dataset, build_dataloader
-from IPython import embed
-import imageio
+
+
+
+import cv2
 
 import sys 
 
 sys.path.append("/cluster/home/terjenf/naplab")
-# sys.path.append("/cluster/home/terjenf/naplab/naplab")
-# sys.path.append("/cluster/home/terjenf/naplab/naplab/naplab")
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description='Visualize groundtruth and results')
+    
+    parser.add_argument(
+        '--image-folder',
+        help='path to folder with predictions (images)'
+    )
+   
+    
+    parser.add_argument(
+        '--pred', 
+        default=True, 
+        help='If semantic predictions or not'
+    )
+    args = parser.parse_args()
+
+    return args
+
 
 
 def sort_func(e):
@@ -35,9 +53,8 @@ def get_img_paths(file_path, pred=False):
         return img_paths 
        
     
-def convert_images_to_video(self, image_files, output_file, fps):
+def convert_images_to_video(image_files, output_file, fps=8):
     # Get the list of image files in the input folder
-
     # Read the first image to get its dimensions
     first_image = cv2.imread(image_files[0])
     height, width, _ = first_image.shape
@@ -55,25 +72,17 @@ def convert_images_to_video(self, image_files, output_file, fps):
     # Release the video writer and close the video file
     video.release()
     cv2.destroyAllWindows()
-    print("Saved video to": output_file)
-
-
+    print("Saved video to", output_file)
 
 
 if __name__ == "__main__": 
 
-    pred_folder = "/cluster/home/terjenf/StreamMapNet/master_work_reversed_fw_coeff_2x0/scene_50/pred"
-    cam_folder = ""
+    args = parse_args()
 
-    cam_files  = get_img_paths(cam_folder)
-    pred_files = get_img_paths(pred_folder, pred=True)
+    files = get_img_paths(args.image_folder, eval(args.pred))
 
- 
+    name = f"{(args.image_folder).split('visualizations')[1].split('pred')[0].replace('/', '')}.mp4"
 
-    output_file_path = "/cluster/home/terjenf/naplab/data/Trip077/StreamMapNet/video"
-
-    name="master_work_reversed_fw_coeff_2x0_scene_50_pred_video.mp4"
-
-    convert_images_to_video(cam_files, os.path.join(output_file_path, name))
+    convert_images_to_video(files, os.path.join(args.image_folder.split("pred")[0], name))
 
 

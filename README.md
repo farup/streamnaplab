@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>StreamMapNet</h1>
+  <h1>StreamMapNet and NAPLab</h1>
   
   <h3>[WACV 2024] StreamMapNet: Streaming Mapping Network for Vectorized Online HD Map Construction </h3>
   
@@ -53,20 +53,35 @@ pip install -r requirements.txt
 
 ### 2. Data Preparation
 
-To use data from NapLab car, frames from a trip need to be extracted, and the dataset structured in NapLab format (close NuScenes). Use the notebooks here: https://github.com/farup/naplab/notebooks
+To use data from NapLab car, the dataset needs to be generated in NapLab format (close NuScenes), and images frames extracted. Clone [this](https://github.com/farup/naplab) and follow the env setup. Use the notebooks examples to format and extract https://github.com/farup/naplab/notebooks
 
-- **Step 1.** Generate the dataset format from a selected trip with 01_parsing_example.ipynb, or used pre-created file for trip:
+- **Step 1.** Generate the dataset format from a selected trip with 01_parsing_example.ipynb
 - **Step 2.** Extract frames from the same trip (01_parsing_example.ipynb): 
+- **Step 3.** Convert the dataset to .pkl file with 03_converting_example: 
 
-```
-naplab_parser.extract_images(scenes=(8,10)) # extraction example
-```
 
 ### 3. Test with NapLab Data: 
+
+To test and visualzie StreamMapNet with data from NapLab, you can either request an interactive job from [IDUN ](https://www.hpc.ntnu.no/idun/documentation/running-jobs/) or submit slurm jobs. The follwoing steps utilize interactive jobs and lauch scripts with python debugger. launch.json is provided, however the filepaths need to be changed. 
+
+Interactive job can be requested in the cmd: 
+```
+ salloc --partition=GPUQ --account=share-ie-idi --time=4:00:00 --nodes=1 --ntasks-per-node=4 --gres=gpu:1 --mem=80G
+```
+
+Proxy jump need to be added in the ssh.config (example node): 
+
+```
+Host idun-09-06
+  HostName idun-09-06
+  ProxyJump idun-login1.hpc.ntnu.no
+  User terjenf
+```
 
 
 In the config file HD-Maps/plugin/configs/nusc_newsplit_480_60x30_24e_naplab.py, set the following variables: 
 
+**Step 1**: Setup config file.
 
 - **ann_file**: path to the converted .pkl file
 - **sample_end.**: path to parent folder of trips with extracted images. 
@@ -76,7 +91,49 @@ If not all images are extracted, we need to adjust the sample start and sample e
 - **sample_start** 40*starte scene number (e.g. 40 * 8) 
 - **sample_end.**  40*end scene number (e.g. 40 * 10)
 
+
+
+**Step 2**: Predict
+
+*Run "Python: Test StreamMapNet NapLab" from the python debugger (launch.json).*
+
+
+**Step 3**: Visualize
+
+To visualzie the predictions, first need to comment out the module import in the first init file in the naplab libary, as their dependecies are not compatibel with the python verison of StreamMapNet (non ideal way): 
+
 ```
+>>  naplab/naplab/__init__.py
+
+print("naplab")
+# from .naplab_processing import NapLabParser
+# from .naplab_processing.parsers import CamParser, GNSSParser
+# from .naplab_processing.utils import f_theta_utils
+
+from .naplab_devkit import NapLab
+# from .converters import create_naplab_infos_map
+
+__all__ = ["NapLab"]
+
+```
+Remeber to uncomment, if used later to parse another trip. 
+
+*Run "Python: Visualize StreamMapNet NapLab" from the python debugger (launch.json).*
+
+
+**Step 4**: Generate Video
+
+
+*Run "Python: Generate StreamMapNet NapLab Video" from the python debugger (launch.json).*
+
+
+
+
+
+
+
+
+
 
 
 
