@@ -9,9 +9,15 @@
 </div>
 
 ## Introduction
-This repository is an official implementation of StreamMapNet.
+This repository contains the adaption of StreamMapNet to NAPLab data.
 
-## Getting Started
+## Getting Started StreamMapNet and NapLab 
+
+**Step 1.** Load Anaconda Module
+```
+module load Anaconda3/2023.09-0
+```
+
 ### 1. Environment
 **Step 1.** Create conda environment and activate it.
 
@@ -46,69 +52,36 @@ pip install -r requirements.txt
 ```
 
 ### 2. Data Preparation
-**Step 1.** Download [NuScenes](https://www.nuscenes.org/download) dataset to `./datasets/nuScenes`.
 
-**Step 2.** Download [Argoverse2 (sensor)](https://argoverse.github.io/user-guide/getting_started.html#download-the-datasets) dataset to `./datasets/av2`.
+To use data from NapLab car, frames from a trip need to be extracted, and the dataset structured in NapLab format (close NuScenes). Use the notebooks here: https://github.com/farup/naplab/notebooks
 
-**Step 3.** Generate annotation files for NuScenes dataset.
-
-```
-python tools/nuscenes_converter.py --data-root ./datasets/nuScenes --newsplit
-```
-
-**Step 4.** Generate annotation files for Argoverse2 dataset.
+- **Step 1.** Generate the dataset format from a selected trip with 01_parsing_example.ipynb, or used pre-created file for trip:
+- **Step 2.** Extract frames from the same trip (01_parsing_example.ipynb): 
 
 ```
-python tools/argoverse_converter.py --data-root ./datasets/av2 --newsplit
+naplab_parser.extract_images(scenes=(8,10)) # extraction example
 ```
 
-### 3. Training and Validating
-To train a model with 8 GPUs:
+### 3. Test with NapLab Data: 
+
+
+In the config file HD-Maps/plugin/configs/nusc_newsplit_480_60x30_24e_naplab.py, set the following variables: 
+
+
+- **ann_file**: path to the converted .pkl file
+- **sample_end.**: path to parent folder of trips with extracted images. 
+
+If not all images are extracted, we need to adjust the sample start and sample end. Each scene has by defeault 40 images:
+
+- **sample_start** 40*starte scene number (e.g. 40 * 8) 
+- **sample_end.**  40*end scene number (e.g. 40 * 10)
 
 ```
-bash tools/dist_train.sh ${CONFIG} 8
-```
 
-To validate a model with 8 GPUs:
 
-```
-bash tools/dist_test.sh ${CONFIG} ${CEHCKPOINT} 8 --eval
-```
 
-To test a model's inference speed:
 
-```
-python tools/benchmark.py ${CONFIG} ${CEHCKPOINT}
-```
 
-## Results
 
-### Results on Argoverse2 newsplit
-| Range | $\mathrm{AP}_{ped}$ | $\mathrm{AP}_{div}$| $\mathrm{AP}_{bound}$ | $\mathrm{AP}$ | Config | Epoch | Checkpoint |
-| :---: |   :---:  |  :---:  | :---:   |:---:|:---: |:---:  | :---:   |
-| $60\times 30\ m$ | 57.9 | 55.7| 61.3| 58.3| [Config](./plugin/configs/av2_newsplit_608_60x30_30e.py) | 30 | [ckpt](https://drive.google.com/file/d/1p6PZDGbVoxedU0YqEbvSBjCMkcTx91ld/view?usp=share_link)|
-| $100\times 50\ m$ |60.0 | 45.9 | 48.9 | 51.6 | [Config](./plugin/configs/av2_newsplit_608_100x0_30e.py5) |30 | [ckpt](https://drive.google.com/file/d/1PkOiGFLGyQ7GUljeRS7REQS6Cv_pV1qx/view?usp=share_link)|
 
-### Results on NuScenes newsplit
-| Range | $\mathrm{AP}_{ped}$ | $\mathrm{AP}_{div}$| $\mathrm{AP}_{bound}$ | $\mathrm{AP}$ | Config | Epoch | Checkpoint |
-| :---: |   :---:  |  :---:  | :---:      |:---:|:---: |:---:   | :---:      |
-| $60\times 30\ m$ | 32.2 | 29.3 | 40.8 | 34.1 | [Config](./plugin/configs/nusc_newsplit_480_60x30_24e.py) | 24| [ckpt](https://drive.google.com/file/d/1L9IRkd_Sg_hPu8SSagWBEZahUD_dvMeG/view?usp=share_link)|
-| $100\times 50\ m$ | 25.6 | 17.4 | 24.3 | 22.4 | [Config](./plugin/configs/nusc_newsplit_480_100x50_24e.py)| 24 | [ckpt](https://drive.google.com/file/d/1nB4r108-rj87Ain7s8HHEo5hXvxZMMre/view?usp=share_link)|
 
-### Results on NuScenes oldsplit
-| Range | $\mathrm{AP}_{ped}$ | $\mathrm{AP}_{div}$| $\mathrm{AP}_{bound}$ | $\mathrm{AP}$ | Config | Epoch | Checkpoint |
-| :---: |   :---:  |  :---:  | :---:      |:---:|:---:|:---:   | :---:      |
-| $60\times 30\ m$ | 61.7| 66.3 | 62.1 | 63.4 | [Config](./plugin/configs/nusc_baseline_480_60x30_30e.py) | 30| [ckpt](https://drive.google.com/file/d/1-n6DGu23KkSO8PFfJ01ofmtUed0zOMZ_/view?usp=share_link)|
-
-## Citation
-If you find our paper or codebase useful in your research, please give us a star and cite our paper.
-```
-@InProceedings{Yuan_2024_streammapnet,
-    author    = {Yuan, Tianyuan and Liu, Yicheng and Wang, Yue and Wang, Yilun and Zhao, Hang},
-    title     = {StreamMapNet: Streaming Mapping Network for Vectorized Online HD Map Construction},
-    booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
-    month     = {January},
-    year      = {2024},
-    pages     = {7356-7365}
-}
-```

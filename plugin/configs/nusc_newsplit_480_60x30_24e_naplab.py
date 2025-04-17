@@ -17,8 +17,17 @@ img_h = 480
 img_w = 800
 img_size = (img_h, img_w)
 
-sample_start = 2000
-sample_end = 2040
+# ---------------------
+
+ann_file = "/cluster/home/terjenf/naplab/data/Trip087/mild_fw_func_maptracker_infos.pkl"
+data_root = "/cluster/home/terjenf/naplab/data" 
+
+sample_start = 320 # 8 Scenes * 40 Frames per scene = 320
+sample_end = 400
+
+
+
+# ---------------------
 
 num_gpus = 1
 batch_size = 4
@@ -279,11 +288,7 @@ test_pipeline = [
         'ego2global_rotation', 'img_shape', 'scene_name'))
 ]
 
-# ann_file = "/cluster/home/terjenf/naplab/data/Trip077/naplab_maptracker_infos.pkl"
-#ann_file = "/cluster/home/terjenf/naplab/data/Trip077/naplab_fw_coeff_0_maptracker_infos.pkl"
-#ann_file = "/cluster/home/terjenf/naplab/data/Trip077/naplab_fe_coeff_reversed_maptracker_infos.pkl"
-ann_file = "/cluster/home/terjenf/naplab/data/Trip077/naplab_fe_coeff_reversed_insert_2x0_maptracker_infos.pkl"
-data_root = "/cluster/home/terjenf/naplab/data" # '/cluster/home/terjenf/maptracker/datasets/nuscenes',
+
 # configs for evaluation code
 # DO NOT CHANGE
 eval_config = dict(
